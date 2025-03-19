@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caldeirão de Vários Símplices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+        
+        body { text-align: center; font-family: Arial, sans-serif; background-color: white; margin: 0; padding: 0; }
+        
+        /* Tela de carregamento */
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #2D6A34;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        #loading-screen text {
+            text-align: center;
+            font-family: 'Julius Sans One', sans-serif;
+            color: #fefefe;
+            line-height: 1.2;
+            font-size: 50px;
+
+        }
+
+        #loading-screen img {
+            width: 350px;
+            display: inline-block;
+        }
+
+        h1, p, label { color: #2D6A34; }
+        #menu { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Tela de carregamento -->
+    <div id="loading-screen">
+        <div id="loading-text">Caldeirão de <br> Vários Símplices</div>
+        <img src="loading-image.png" alt="Carregando">
+    </div>
+
+    
+    <!-- Conteúdo da primeira página -->
+    <div id="first-page">
+        <div class="header"> 
+            <img src="logo.png" alt="Logo" class="logo">
+            <div class="app-name">Caldeirão de Vários Símplices</div>
+        </div>
+        <div id="menu">
+            <button class="menu-button">Desafio</button>
+            <a href="jogar.html" class="menu-button">Jogar</a>
+            <a href="enciclopedia.html" class="menu-button">Enciclopédia</a>
+            <a href="perfil.html" class="menu-button">Perfil</a>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(() => {
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("menu").style.display = "block";
+            }, 3000); // Tempo de carregamento de 3 segundos
+        });
+    </script>
+</body>
+</html>

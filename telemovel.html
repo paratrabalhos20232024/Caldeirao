@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Diário</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+        
+        body { text-align: center; font-family: Arial, sans-serif; background-color: white; }
+        h1, p, label { color: #2D6A34; }
+        #continuar-btn, #misturar-btn { 
+            display: none; 
+            padding: 10px 20px; 
+            font-size: 18px; 
+            background: #2D6A34; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px;
+        }
+        video { max-width: 90%; margin: 20px auto; display: block; }
+        
+        #caldeirao-container {
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        #caldeirao {
+            width: 400px;
+            display: inline-block;
+        }
+
+        #pergunta {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px;
+            color: #2D6A34;
+        }
+
+        #ingredientes-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        select { 
+            padding: 10px; 
+            font-size: 16px; 
+            background: #2D6A34; 
+            color: white; 
+            border: none; 
+            border-radius: 5px;
+            width: 50%;
+            margin: 10px auto;
+        }
+
+        #misturar-btn {
+            margin-top: 10px;
+            align-self: flex-end;
+            margin-right: 25%;
+        }
+
+        option {
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .selecionado {
+            background-color: gray !important;
+            color: white !important;
+        }
+
+        #resultado {
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .logo {
+            height: 50px;
+        }
+        .app-name {
+            font-family: 'Julius Sans One', sans-serif;
+            color: #2D6A34;
+            font-size: 24px;
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+                padding: 10px;
+            }
+            #caldeirao {
+                width: 90%;
+            }
+            #ingredientes-container {
+                width: 90%;
+            }
+            select {
+                width: 100%;
+            }
+            #misturar-btn {
+                width: 100%;
+                margin: 10px 0;
+                align-self: center;
+            }
+            #resultado {
+                width: 80%;
+                font-size: 18px;
+            }
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img class="logo" src="logo.png" alt="Logo">
+        <div class="app-name">Caldeirão de <br> Vários Símplices</div>
+    </div>
+    
+    <h1 id="titulo-video">Desafio Diário 🎥</h1>
+    <video id="videoDiario" controls>
+        <source src="video_do_dia.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos.
+    </video>
+    <button id="continuar-btn">Continuar</button>
+
+    <div id="jogo" style="display: none;">
+        <p id="pergunta"></p>
+
+        <div id="ingredientes-container">
+            <label for="ingrediente-select">Escolha até 3 ingredientes:</label>
+            <select id="ingrediente-select" multiple></select>
+            <button id="misturar-btn">Misturar!</button>
+        </div>
+
+        <div id="caldeirao-container">
+            <img id="caldeirao" src="caldeirao.png" alt="Caldeirão">
+            <p id="resultado"></p>
+        </div>
+    </div>
+
+    <audio id="bubbleSound">
+        <source src="bolhas.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <script>
+        const video = document.getElementById("videoDiario");
+        const continuarBtn = document.getElementById("continuar-btn");
+        const jogo = document.getElementById("jogo");
+        const tituloVideo = document.getElementById("titulo-video");
+        const select = document.getElementById("ingrediente-select");
+        const misturarBtn = document.getElementById("misturar-btn");
+        const resultado = document.getElementById("resultado");
+        const bubbleSound = document.getElementById("bubbleSound");
+
+        video.addEventListener("ended", () => {
+            continuarBtn.style.display = "inline-block";
+        });
+
+        continuarBtn.addEventListener("click", () => {
+            video.style.display = "none";
+            continuarBtn.style.display = "none";
+            tituloVideo.style.display = "none";
+            jogo.style.display = "block";
+            iniciarJogo();
+        });
+
+        function iniciarJogo() {
+            const perguntas = [
+                "Como será meu dia hoje?",
+                "O que devo focar hoje?",
+                "Qual será meu humor do dia?"
+            ];
+            const ingredientes = {
+                "Pó de estrela": "Sorte",
+                "Lágrima de fada": "Alegria",
+                "Raiz de mandrágora": "Desafios",
+                "Pó de lua": "Mistério",
+                "Essência de sol": "Energia",
+                "Gotas de sombra": "Cansaço"
+            };
+
+            document.getElementById("pergunta").textContent = perguntas[Math.floor(Math.random() * perguntas.length)];
+            select.innerHTML = "";
+
+            Object.keys(ingredientes).forEach(ing => {
+                let option = document.createElement("option");
+                option.value = ing;
+                option.textContent = ing;
+                option.onclick = function () {
+                    this.classList.toggle("selecionado");
+                };
+                select.appendChild(option);
+            });
+
+            misturarBtn.style.display = "inline-block";
+
+            misturarBtn.onclick = function() {
+                let escolhidos = Array.from(select.options).filter(option => option.classList.contains("selecionado")).map(option => option.value);
+                resultado.style.display = "none";
+
+                // Inicia o som de bolhas
+                bubbleSound.play();
+
+                setTimeout(() => {
+                    if (escolhidos.length === 0) {
+                        resultado.textContent = "O dia será um mistério!";
+                    } else {
+                        let efeitos = escolhidos.map(ing => ingredientes[ing]).join(" e ");
+                        resultado.textContent = "Resultado: " + efeitos;
+                    }
+                    resultado.style.display = "block";
+                }, 2000);
+            };
+        }
+    </script>
+</body>
+</html>

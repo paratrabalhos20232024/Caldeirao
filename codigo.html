@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caldeirão de Vários Símplices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+        
+        
+        body { text-align: center; font-family: 'Julius Sans One', sans-serif; background-color: white; }
+
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #2D6A34;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        #loading-text {
+            font-family: 'Julius Sans One', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            font-size: 65px;
+            margin-bottom: 5px;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        #loading-screen img {
+            width: 350px;
+        }
+
+        h2 {
+            height: 50px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 15px;
+            color: #2D6A34;
+
+        }
+
+        .logo {
+            height: 50px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        #first-page { display: none; }
+
+
+        h1 {
+            align-items: center;
+            color: #2D6A34;
+            font-size: 50px;
+            margin-top: 100px
+        }
+
+        p, label { color: #2D6A34; }
+
+
+        #continuar-btn { 
+            display: none; 
+            padding: 10px 20px; 
+            font-size: 18px; 
+            background: #2D6A34; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px;
+        }
+
+
+        /* Ajustar espaço abaixo do conteúdo para não ser tapado */
+        .nav-bar {
+            display: none; /* Inicia oculta */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none; /* Inicia oculta */
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .menu-button, .nav-bar a {
+            color: white;
+            text-decoration: none;
+            background: none;
+            border: none;
+            font-size: 18px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .menu-button:hover, .nav-bar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Espaço extra para evitar que a navbar cubra o conteúdo */
+        #conteudo-principal {
+            padding-bottom: 60px;
+        }
+
+
+        #first-page .header {
+            color: #2D6A34;
+            font-size: 30px;
+            align-items: center;
+            margin-top: 200px; /* Move o título um pouco para baixo */
+
+        }
+
+        #first-page .app-name {
+            align-items: center;
+            color: #2D6A34;
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 20px; /* Adiciona espaço abaixo do logo */
+        }
+
+        #first-page .menu-button {
+            margin-top: 20px; /* Adiciona espaçamento entre o título e o primeiro botão */
+            font-family:'Julius Sans One', sans-serif ;
+        }
+
+        #misturar-btn { 
+            display: none; 
+            padding: 10px 20px; 
+            font-size: 18px; 
+            background: #2D6A34; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px;
+        }
+        video { max-width: 90%; margin: 20px auto; display: block; margin-top: 30px; }
+        
+        #caldeirao-container {
+            text-align: center;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        #caldeirao {
+            width: 400px;
+            display: inline-block;
+        }
+
+        #pergunta {
+            margin-top: 150px !important; /* Aumentei para dar mais espaço */
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px;
+            color: #2D6A34;
+        }
+        #perguntas-container {
+            margin-top: 150px !important;/* Aumente esse valor para descer mais */
+        }
+
+        #ingredientes-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        #opcoes-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+                }
+
+        select {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            background: #2D6A34;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Deixa as opções dentro do dropdown alinhadas horizontalmente */
+        select option {
+            display: inline-block;
+            padding: 10px;
+        }
+
+
+        #misturar-btn {
+            margin-top: 10px;
+            align-self: flex-end;
+            margin-right: 25%;
+        }
+
+        option {
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .selecionado {
+            background-color: gray !important;
+            color: white !important;
+        }
+
+        #resultado {
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+        }
+     
+        .logo {
+            height: 50px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .menu-button {
+            font-family:'Julius Sans One', sans-serif ;
+            display: block;
+            width: 200px;
+            padding: 15px;
+            margin: 10px auto;
+            font-size: 18px;
+            background: #2D6A34;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .menu-button:hover {
+            background: #245b2c;
+        }
+
+    </style>
+</head>
+    <body> 
+        <!-- Tela de carregamento -->
+        <div id="loading-screen">
+            <div id="loading-text">Caldeirão de <br> Vários Símplices</div>
+            <img src="loading-image.png" alt="Carregando">
+        </div>
+      
+        <div id="first-page">
+            <div class="header"> 
+                <img src="logo.png" alt="Logo" class="logo">
+                <div class="app-name">Caldeirão de <br> Vários Símplices</div>
+            </div>        
+
+            <div id="menu">
+                <button class="menu-button">Desafio</button>
+                <button class="menu-button">Jogar</button>
+                <button class="menu-button">Enciclopédia</button>
+                <button class="menu-button">Perfil</button>
+            </div>
+        </div>
+        
+        <!-- Navbar (inicia oculta) -->
+        <div class="nav-bar" id="nav-bar">
+            <button class="menu-button">Desafio</button>
+            <button class="menu-button">Jogar</button>
+            <a href="javascript:void(0);" onclick="goToHome()">Home</a>
+            <button class="menu-button">Enciclopédia</button>
+            <button class="menu-button">Perfil</button>
+        </div>
+
+
+        <div id="Desafio" style="display: none;">
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1 id="titulo-video">Desafio Diário 🎥</h1>
+            <h2>Caldeirão de <br> Vários Símplices</h2>
+            <video id="videoDiario" controls>
+                <source src="video_do_dia.mp4" type="video/mp4">
+                Seu navegador não suporta vídeos.
+            </video>
+            <button id="continuar-btn">Continuar</button>
+        </div>
+
+        <div id="jogo" style="display: none;">
+            <p id="pergunta"></p> <!-- Aqui será exibida a pergunta -->
+        
+            <div id="opcoes-container">
+                <select id="dropdown-opcoes">
+                    <option value="" disabled selected>Selecione uma resposta...</option>
+                </select>
+            </div>
+            <button id="misturar-btn" style="display: none;">Responder</button>            
+        
+            <div id="caldeirao-container">
+                <img id="caldeirao" src="caldeirao.png" alt="Caldeirão">
+                <p id="resultado"></p>
+            </div>
+        </div>        
+        
+
+        <audio id="bubbleSound">
+            <source src="bolhas.mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        </audio>
+    
+    <script>
+        
+            document.addEventListener("DOMContentLoaded", function() {
+                const menuButtons = document.querySelectorAll(".menu-button"); 
+                const firstPage = document.getElementById("first-page");
+                const desafioDiv = document.getElementById("Desafio");
+
+                menuButtons.forEach(button => {
+                    button.addEventListener("click", function() {
+                        firstPage.style.display = "none"; 
+                        document.getElementById("nav-bar").style.display = "flex"; 
+                    });
+                });
+            });
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+                        setTimeout(() => {
+                            document.getElementById("loading-screen").style.display = "none";
+                            document.getElementById("first-page").style.display = "block";
+                        }, 3000); // Tempo de carregamento de 3 segundos
+                    });
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const desafioBtn = document.querySelector(".menu-button"); // Seleciona o botão "Desafio"
+                const menu = document.getElementById("menu");
+                const desafioDiv = document.getElementById("Desafio");
+        
+                desafioBtn.addEventListener("click", function() {
+                    menu.style.display = "none"; // Esconde o menu principal
+                    desafioDiv.style.display = "block"; // Exibe a seção do desafio
+                });
+            });
+
+    
+            const video = document.getElementById("videoDiario");
+            const continuarBtn = document.getElementById("continuar-btn");
+            const jogo = document.getElementById("jogo");
+            const tituloVideo = document.getElementById("titulo-video");
+            const misturarBtn = document.getElementById("misturar-btn");
+            const resultado = document.getElementById("resultado");
+            const bubbleSound = document.getElementById("bubbleSound");
+        
+            video.addEventListener("ended", () => {
+                continuarBtn.style.display = "inline-block";
+            });
+        
+            continuarBtn.addEventListener("click", () => {
+                video.style.display = "none";
+                continuarBtn.style.display = "none";
+                tituloVideo.style.display = "none";
+                jogo.style.display = "block";
+                iniciarJogo();
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                let firstPage = document.getElementById("first-page");
+                let navBar = document.getElementById("nav-bar");
+                let loadingScreen = document.getElementById("loading-screen");
+                let conteudoPrincipal = document.getElementById("conteudo-principal");
+
+                // Garante que a navbar começa oculta
+                navBar.style.display = "none";
+
+                // Função para sair da first page e mostrar navbar
+                window.sairDaFirstPage = function () {
+                    firstPage.style.display = "none";
+                    conteudoPrincipal.style.display = "block";
+                    navBar.style.display = "flex"; // Mostra a navbar
+                };
+
+                // Função para voltar à first page e esconder navbar
+                window.goToHome = function () {
+                    // Esconde todas as outras seções da página
+                    document.getElementById("Desafio").style.display = "none";
+                    document.getElementById("jogo").style.display = "none";
+                    document.getElementById("caldeirao-container").style.display = "none";
+                    document.getElementById("resultado").style.display = "none";
+
+                    // Exibe a first-page
+                    const firstPage = document.getElementById("first-page");
+                    firstPage.style.display = "block";
+
+                    // Exibe o menu de botões novamente
+                    const menu = document.getElementById("menu");
+                    menu.style.display = "block";
+
+                    // Garante que todos os botões do menu sejam visíveis
+                    const menuButtons = menu.querySelectorAll(".menu-button");
+                    menuButtons.forEach(button => {
+                        button.style.display = "block";
+                    });
+
+                    // Esconde a barra de navegação
+                    document.getElementById("nav-bar").style.display = "none";
+                };
+
+
+
+            });
+
+
+            let perguntaAtual = null;
+
+            
+
+
+            function carregarPerguntasXML(callback) {
+                fetch("perguntas.xml")
+                    .then(response => response.text())
+                    .then(str => {
+                        console.log("XML carregado com sucesso!"); 
+                        let parser = new DOMParser();
+                        let xml = parser.parseFromString(str, "text/xml");
+                        let perguntas = xml.getElementsByTagName("pergunta");
+
+                        let listaPerguntas = [];
+                        for (let i = 0; i < perguntas.length; i++) {
+                            let texto = perguntas[i].getElementsByTagName("texto")[0].textContent;
+                            let opcoes = perguntas[i].getElementsByTagName("opção");
+                            let resposta = perguntas[i].getElementsByTagName("resposta")[0].textContent;
+
+                            let opcoesArray = [];
+                            for (let j = 0; j < opcoes.length; j++) {
+                                opcoesArray.push({
+                                    id: opcoes[j].getAttribute("id"),
+                                    texto: opcoes[j].textContent
+                                });
+                            }
+
+                            listaPerguntas.push({ texto, opcoes: opcoesArray, resposta });
+                        }
+
+                        callback(listaPerguntas);
+
+                        // Adicionar espaçamento extra ao container das perguntas
+                        document.getElementById("perguntas-container").style.marginTop = "50px";
+                    })
+                    .catch(error => console.error("Erro ao carregar o XML: ", error));
+            }
+
+
+            
+
+            function iniciarJogo() {
+                carregarPerguntasXML(perguntas => {
+                    perguntaAtual = perguntas[Math.floor(Math.random() * perguntas.length)];
+
+                    document.getElementById("pergunta").textContent = perguntaAtual.texto;
+                    
+                    let dropdown = document.getElementById("dropdown-opcoes");
+                    dropdown.innerHTML = '<option value="" disabled selected>Selecione uma resposta...</option>'; 
+
+                    perguntaAtual.opcoes.forEach(opcao => {
+                        let optionElement = document.createElement("option");
+                        optionElement.value = opcao.texto;
+                        optionElement.textContent = opcao.texto;
+                        dropdown.appendChild(optionElement);
+                    });
+
+                    document.getElementById("misturar-btn").style.display = "inline-block";
+                    document.getElementById("jogo").style.display = "block";
+                });
+            }
+
+
+            // Verificar resposta quando clicar no botão "Responder"
+            document.getElementById("misturar-btn").addEventListener("click", function() {
+                let dropdown = document.getElementById("dropdown-opcoes");
+                let respostaSelecionada = dropdown.value;
+                
+                if (!respostaSelecionada) {
+                    alert("Por favor, selecione uma resposta!");
+                    return;
+                }
+
+                if (perguntaAtual && respostaSelecionada === perguntaAtual.resposta) {
+                    alert("Resposta correta!");
+                } else {
+                    alert("Resposta errada! Tente novamente.");
+                }
+            });
+
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,34 @@
+<perguntas>
+    <pergunta>
+        <texto>Para tratar a mordedura de uma víbora, qual era o remédio indicado por João Curvo Semedo?</texto>
+        <opções>
+            <opção id="a">Beber vinho em jejum.</opção>
+            <opção id="b">Aplicar Pedra Cordeal Composta com serpentaria Virginiana ou Cardo Santo.</opção>
+            <opção id="c">Comer folhas de espinheiro alvar.</opção>
+            <opção id="d">Tomar 24 grãos de antimônio diaforético.</opção>
+        </opções>
+        <resposta id="b">Aplicar Pedra Cordeal Composta com serpentaria Virginiana ou Cardo Santo.</resposta>
+    </pergunta>
+
+    <pergunta>
+        <texto>Segundo João Curvo Semedo, o que ajudava a combater as doenças causadas pelo "ar corrupto"?</texto>
+        <opções>
+            <opção id="a">Cozer a Pedra Cordeal Composta com raiz de brassica marina.</opção>
+            <opção id="b">Aplicar vinho branco na pele.</opção>
+            <opção id="c">Ingerir pó de Butua com pãe de faveira seca.</opção>
+            <opção id="d">Tomar durante 40 dias água cozida com espinheiro alvar e limaduras de ossos de veado.</opção>
+        </opções>
+        <resposta id="d">Tomar durante 40 dias água cozida com espinheiro alvar e limaduras de ossos de veado.</resposta>
+    </pergunta>
+
+    <pergunta>
+        <texto>Qual era um dos tratamentos recomendados para combater a melancolia?</texto>
+        <opções>
+            <opção id="a">Beber 4 onças de vinho Rhim com pó de Pedra Cordeal Composta.</opção>
+            <opção id="b">Cozinhar borragens e beber sua infusão.</opção>
+            <opção id="c">Tomar apenas água fervida com escorcioneira.</opção>
+            <opção id="d">Aplicar limaduras de ossos de veado diretamente na pele.</opção>
+        </opções>
+        <resposta id="a">Beber 4 onças de vinho Rhim com pó de Pedra Cordeal Composta.</resposta>
+    </pergunta>
+</perguntas>
